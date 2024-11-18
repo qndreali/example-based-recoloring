@@ -107,3 +107,6 @@ def demo():
 
             cv2.imwrite(output_path, output_img)
             print(f"Output saved to {output_path}")
+
+if __name__ == "__main__":
+    demo()
