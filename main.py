@@ -74,4 +74,9 @@ class ColorTransfer:
         return np.linalg.inv(rotation) @ adjusted
 
 
- 
+def demo():
+    cur_dir = os.path.abspath(os.path.dirname(__file__))
+    input_folder = os.path.join(cur_dir, "input")
+    reference_folder = os.path.join(cur_dir, "reference")
+    output_folder = os.path.join(cur_dir, "output")
+    os.makedirs(output_folder, exist_ok=True)
