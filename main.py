@@ -67,6 +67,16 @@ class ColorTransfer:
 
         adjusted = ((arr_input - mean_in[:, None]) * (std_ref / std_in)[:, None]) + mean_ref[:, None]
         return np.linalg.inv(rotation) @ adjusted
+    
+def load_image(image_path):
+    img = cv2.imread(image_path)
+    if img is None:
+        raise ValueError(f"Could not read image at {image_path}.")
+    return img
+
+
+def get_output_filename(input_name, reference_name):
+    return f"{os.path.splitext(input_name)[0]}_{os.path.splitext(reference_name)[0]}.png"
 
 
 def demo():
@@ -78,32 +88,27 @@ def demo():
 
     color_transfer = ColorTransfer()
 
-    input_files = sorted(f for f in os.listdir(input_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg')))
-    reference_files = sorted(f for f in os.listdir(reference_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg')))
+    input_files = [f for f in sorted(os.listdir(input_folder)) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+    reference_files = [f for f in sorted(os.listdir(reference_folder)) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
 
     for input_file in input_files:
-        input_path = os.path.join(input_folder, input_file)
-        input_img = cv2.imread(input_path)
-
-        if input_img is None:
-            print(f"Error: Could not read input image {input_file}. Skipping...")
+        try:
+            input_img = load_image(os.path.join(input_folder, input_file))
+        except ValueError as e:
+            print(e)
             continue
 
         for reference_file in reference_files:
-            reference_path = os.path.join(reference_folder, reference_file)
-            reference_img = cv2.imread(reference_path)
-
-            if reference_img is None:
-                print(f"Error: Could not read reference image {reference_file}. Skipping...")
+            try:
+                reference_img = load_image(os.path.join(reference_folder, reference_file))
+                output_img = color_transfer.pdf_transfer(input_img, reference_img)
+                
+                output_path = os.path.join(output_folder, get_output_filename(input_file, reference_file))
+                cv2.imwrite(output_path, output_img)
+                print(f"Output saved to {output_path}")
+            except ValueError as e:
+                print(e)
                 continue
-
-            output_img = color_transfer.pdf_transfer(input_img, reference_img)
-
-            output_file_name = f"{os.path.splitext(input_file)[0]}_{os.path.splitext(reference_file)[0]}.png"
-            output_path = os.path.join(output_folder, output_file_name)
-
-            cv2.imwrite(output_path, output_img)
-            print(f"Output saved to {output_path}")
 
 if __name__ == "__main__":
     demo()
