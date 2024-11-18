@@ -24,7 +24,7 @@ class Rotations:
 class ColorTransfer:
     def __init__(self, eps=1e-6, matrix_count=6, color_channels=3):
         self.eps = eps
-        self.rotation_matrices = (
+        self.rotations = (
             Rotations.optimal_rotations() if color_channels == 3 
             else Rotations.random_rotations(matrix_count, color_channels)
         )
@@ -33,23 +33,16 @@ class ColorTransfer:
         h, w, c = img_input.shape
         input_pixels = img_input.reshape(-1, c).T / 255.0
         reference_pixels = img_reference.reshape(-1, c).T / 255.0
-        output_pixels = self._transfer_pixels(input_pixels, reference_pixels)
-        output_img = np.clip(output_pixels.T.reshape(h, w, c) * 255.0, 0, 255).astype("uint8")
-        return output_img
-    
-    def _transfer_pixels(self, arr_input, arr_reference):
-        output = arr_input.copy()
-        for rotation in self.rotation_matrices:
-            rotated_input = rotation @ arr_input
-            rotated_reference = rotation @ arr_reference
 
-            output = self._match_distribution(rotated_input, rotated_reference, rotation)
-        return output
+        for rotation in self.rotations:
+            input_pixels = self._match_distribution(
+                rotation @ input_pixels, rotation @ reference_pixels, rotation
+            )
+        return np.clip((input_pixels.T.reshape(h, w, c) * 255), 0, 255).astype("uint8")
     
     def _match_distribution(self, arr_input, arr_reference, rotation):
-        mean_in, std_in = arr_input.mean(axis=1), arr_input.std(axis=1) + self.eps
-        mean_ref, std_ref = arr_reference.mean(axis=1), arr_reference.std(axis=1) + self.eps
-
+        mean_in, std_in = arr_input.mean(1), arr_input.std(1) + self.eps
+        mean_ref, std_ref = arr_reference.mean(1), arr_reference.std(1) + self.eps
         adjusted = ((arr_input - mean_in[:, None]) * (std_ref / std_in)[:, None]) + mean_ref[:, None]
         return np.linalg.inv(rotation) @ adjusted
     
