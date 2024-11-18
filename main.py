@@ -43,3 +43,9 @@ class ColorTransfer:
             self.rotation_matrices = Rotations.optimal_rotations()
         else:
             self.rotation_matrices = Rotations.random_rotations(matrix_count, color_channels)
+
+    def pdf_transfer(self, img_input, img_reference):
+        h, w, c = img_input.shape
+        input_pixels = img_input.reshape(-1, c).T / 255.0
+        reference_pixels = img_reference.reshape(-1, c).T / 255.0
+ 
