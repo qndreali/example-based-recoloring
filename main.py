@@ -48,4 +48,10 @@ class ColorTransfer:
         h, w, c = img_input.shape
         input_pixels = img_input.reshape(-1, c).T / 255.0
         reference_pixels = img_reference.reshape(-1, c).T / 255.0
+        output_pixels = self._transfer_pixels(input_pixels, reference_pixels)
+        
+        output_pixels = np.clip(output_pixels * 255.0, 0, 255).astype("uint8")
+        output_img = output_pixels.T.reshape(h, w, c)
+
+        return output_img
  
