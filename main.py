@@ -33,3 +33,6 @@ class Rotations:
                       [-0.333450, -0.244075, 0.910625]])
         ]
         return predefined_matrices
+    
+class ColorTransfer:
+    pass
