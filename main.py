@@ -1,7 +1,7 @@
 import os
 import cv2
 import numpy as np
-from scipy.spatial.transform import special_ortho_group
+from scipy.stats import special_ortho_group
 
 class Rotations:
     @staticmethod
