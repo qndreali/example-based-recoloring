@@ -100,4 +100,10 @@ def demo():
                 print(f"Error: Could not read reference image {reference_file}. Skipping...")
                 continue
 
+            output_img = ColorTransfer.pdf_transfer(input_img, reference_img)
 
+            output_file_name = f"{os.path.splitext(input_file)[0]}_{os.path.splitext(reference_file)[0]}.png"
+            output_path = os.path.join(output_folder, output_file_name)
+
+            cv2.imwrite(output_path, output_img)
+            print(f"Output saved to {output_path}")
