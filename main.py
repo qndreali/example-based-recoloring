@@ -80,3 +80,14 @@ def demo():
     reference_folder = os.path.join(cur_dir, "reference")
     output_folder = os.path.join(cur_dir, "output")
     os.makedirs(output_folder, exist_ok=True)
+
+    input_files = sorted(f for f in os.listdir(input_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg')))
+    reference_files = sorted(f for f in os.listdir(reference_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg')))
+
+    for input_file in input_files:
+        input_path = os.path.join(input_folder, input_file)
+        input_img = cv2.imread(input_path)
+
+        for reference_file in reference_files:
+            reference_path = os.path.join(reference_folder, reference_file)
+            reference_img = cv2.imread(reference_path)
