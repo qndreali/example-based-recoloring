@@ -37,5 +37,4 @@ class Rotations:
 class ColorTransfer:
     def __init__(self, eps=1e-6, matrix_count=6, color_channels=3):
         self.eps = eps
-        self.rotation_matrices = (Rotations.optimal_rotations() if color_channels == 3 
-                                  else Rotations.random_rotations(matrix_count, color_channels))
+        self.rotation_matrices = []
