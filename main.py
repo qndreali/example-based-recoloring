@@ -81,6 +81,8 @@ def demo():
     output_folder = os.path.join(cur_dir, "output")
     os.makedirs(output_folder, exist_ok=True)
 
+    color_transfer = ColorTransfer()
+
     input_files = sorted(f for f in os.listdir(input_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg')))
     reference_files = sorted(f for f in os.listdir(reference_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg')))
 
@@ -100,7 +102,7 @@ def demo():
                 print(f"Error: Could not read reference image {reference_file}. Skipping...")
                 continue
 
-            output_img = ColorTransfer.pdf_transfer(input_img, reference_img)
+            output_img = color_transfer.pdf_transfer(input_img, reference_img)
 
             output_file_name = f"{os.path.splitext(input_file)[0]}_{os.path.splitext(reference_file)[0]}.png"
             output_path = os.path.join(output_folder, output_file_name)
