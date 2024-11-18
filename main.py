@@ -12,6 +12,7 @@ class Rotations:
             raise ValueError("Number of matrices must be at least 1.")
         return [cls.generate_random_rotation(dim) for _ in range(num_matrices)]
     
+    @staticmethod
     def optimal_rotations():
         predefined_matrices = [
             np.eye(3),
