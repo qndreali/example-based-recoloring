@@ -63,5 +63,13 @@ class ColorTransfer:
 
             output = self._match_distribution(rotated_input, rotated_reference, rotation)
         return output
+    
+    def _match_distribution(self, arr_input, arr_reference, rotation):
+        mean_in, std_in = arr_input.mean(axis=1), arr_input.std(axis=1) + self.eps
+        mean_ref, std_ref = arr_reference.mean(axis=1), arr_reference.std(axis=1) + self.eps
+
+        adjusted = ((arr_input - mean_in[:, None]) * (std_ref / std_in)[:, None]) + mean_ref[:, None]
+        return np.linalg.inv(rotation) @ adjusted
+
 
  
