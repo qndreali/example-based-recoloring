@@ -41,3 +41,5 @@ class ColorTransfer:
 
         if color_channels == 3:
             self.rotation_matrices = Rotations.optimal_rotations()
+        else:
+            self.rotation_matrices = Rotations.random_rotations(matrix_count, color_channels)
