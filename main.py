@@ -54,4 +54,14 @@ class ColorTransfer:
         output_img = output_pixels.T.reshape(h, w, c)
 
         return output_img
+    
+    def _transfer_pixels(self, arr_input, arr_reference):
+        output = arr_input.copy()
+        for rotation in self.rotation_matrices:
+            rotated_input = rotation @ arr_input
+            rotated_reference = rotation @ arr_reference
+
+            output = self._match_distribution(rotated_input, rotated_reference, rotation)
+        return output
+
  
