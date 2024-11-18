@@ -88,6 +88,16 @@ def demo():
         input_path = os.path.join(input_folder, input_file)
         input_img = cv2.imread(input_path)
 
+        if input_img is None:
+            print(f"Error: Could not read input image {input_file}. Skipping...")
+            continue
+
         for reference_file in reference_files:
             reference_path = os.path.join(reference_folder, reference_file)
             reference_img = cv2.imread(reference_path)
+
+            if reference_img is None:
+                print(f"Error: Could not read reference image {reference_file}. Skipping...")
+                continue
+
+
