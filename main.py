@@ -52,6 +52,13 @@ def load_image(path):
         raise ValueError(f"Could not read image at {path}.")
     return img
 
+def create_comparison_image(input_img, ref_img, output_img):
+    height = max(input_img.shape[0], ref_img.shape[0], output_img.shape[0])
+    input_img = cv2.resize(input_img, (int(input_img.shape[1] * height / input_img.shape[0]), height))
+    ref_img = cv2.resize(ref_img, (int(ref_img.shape[1] * height / ref_img.shape[0]), height))
+    output_img = cv2.resize(output_img, (int(output_img.shape[1] * height / output_img.shape[0]), height))
+    return np.hstack((input_img, ref_img, output_img))
+
 def process_images(input_folder, reference_folder, output_folder):
     os.makedirs(output_folder, exist_ok=True)
     color_transfer = ColorTransfer()
