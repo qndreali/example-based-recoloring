@@ -72,6 +72,11 @@ def process_images(input_folder, reference_folder, output_folder, comparison_fol
     for input_file in input_files:
         input_img = load_image(os.path.join(input_folder, input_file))
         for reference_file in reference_files:
+
+            if os.path.splitext(input_file)[0] == os.path.splitext(reference_file)[0]:
+                print(f"Skipping: {input_file} and {reference_file} (same file name)")
+                continue
+             
             ref_img = load_image(os.path.join(reference_folder, reference_file))
             output_img = color_transfer.pdf_transfer(input_img, ref_img)
             output_path = os.path.join(output_folder, f"{os.path.splitext(input_file)[0]}_{os.path.splitext(reference_file)[0]}.png")
