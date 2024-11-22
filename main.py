@@ -95,4 +95,5 @@ if __name__ == "__main__":
         os.path.join(base_dir, "input"),
         os.path.join(base_dir, "reference"),
         os.path.join(base_dir, "output"),
+        os.path.join(base_dir, "comparison"),
     )
