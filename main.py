@@ -81,7 +81,13 @@ def process_images(input_folder, reference_folder, output_folder, comparison_fol
             output_img = color_transfer.pdf_transfer(input_img, ref_img)
             output_path = os.path.join(output_folder, f"{os.path.splitext(input_file)[0]}_{os.path.splitext(reference_file)[0]}.png")
             cv2.imwrite(output_path, output_img)
-            print(f"Saved: {output_path}")
+
+            comparison_img = create_comparison_image(input_img, ref_img, output_img)
+            comparison_path = os.path.join(comparison_folder, f"{os.path.splitext(input_file)[0]}_{os.path.splitext(reference_file)[0]}.png")
+            cv2.imwrite(comparison_path, comparison_img)
+            
+            print(f"Saved output: {output_path}")
+            print(f"Saved comparison: {comparison_path}")
 
 if __name__ == "__main__":
     base_dir = os.path.abspath(os.path.dirname(__file__))
