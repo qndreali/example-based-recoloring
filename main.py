@@ -59,7 +59,10 @@ def create_comparison_image(input_img, ref_img, output_img):
     output_img = cv2.resize(output_img, (int(output_img.shape[1] * height / output_img.shape[0]), height))
     return np.hstack((input_img, ref_img, output_img))
 
-def process_images(input_folder, reference_folder, output_folder):
+def process_images(input_folder, reference_folder, output_folder, comparison_folder):
+    os.makedirs(output_folder, exist_ok=True)
+    os.makedirs(comparison_folder, exist_ok=True)
+    
     os.makedirs(output_folder, exist_ok=True)
     color_transfer = ColorTransfer()
 
